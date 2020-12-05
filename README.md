@@ -32,3 +32,5 @@ growths: {
 	luk: 5
 }
 }
+
+MINOR BUG: when using unit bases, if an event enemy is loaded at the start of the map without wait, it will get applied twice
