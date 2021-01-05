@@ -1,13 +1,7 @@
 //Plugin by Goinza
-
-var UNIT_BASES = false;
+// Edited by Colonel S and D MAS
 
 EnemyCalculator = {
-
-	getBaseValues: function(unitClass) {
-		// var classBases = unit.custom.bases;
-		
-	},
 
     getGrowthValues: function(unitClass) {
         var classGrowths = unitClass.custom.growths;       
@@ -138,7 +132,8 @@ EnemyCalculator = {
             else {
                 finalGrowths.wlv = all;
             }
-        } else {
+        }
+        else {
             finalGrowths.mhp = 0;
             finalGrowths.str = 0;
             finalGrowths.mag = 0;
@@ -155,8 +150,157 @@ EnemyCalculator = {
         return finalGrowths;
 
     },
-	
-	getDifficultyGrowthValues: function() {
+
+	 getBaseValues: function(unitClass) {
+        var classBases = unitClass.custom.bases;       
+
+        var finalBases = {};
+        if (classBases!=null) {
+            if (typeof classBases != 'object') {
+                throwError033(unitClass);
+            }
+            
+            var all;
+            if (classBases.all!=null) {
+                if (typeof classBases.all != 'number') {
+                    throwError033(unitClass);
+                }
+                all = classBases.all;
+            }
+            else {
+                all = 0;
+            }
+    
+            if (classBases.mhp!=null) {
+                if (typeof classBases.mhp != 'number') {
+                    throwError033(unitClass);
+                }
+                finalBases.mhp = classBases.mhp;
+            }
+            else {
+                classBases.mhp = all;
+            }
+    
+            if (classBases.str!=null) {
+                if (typeof classBases.str != 'number') {
+                    throwError033(unitClass);
+                }
+                finalBases.str = classBases.str;
+            }
+            else {
+                finalBases.str = all;
+            }
+    
+            if (classBases.mag!=null) {
+                if (typeof classBases.mag != 'number') {
+                    throwError033(unitClass);
+                }
+                finalBases.mag = classBases.mag;
+            }
+            else {
+                finalBases.mag = all;
+            }
+    
+            if (classBases.ski!=null) {
+                if (typeof classBases.ski != 'number') {
+                    throwError033(unitClass);
+                }
+                finalBases.ski = classBases.ski;
+            }
+            else {
+                finalBases.ski = all;
+            }
+    
+            if (classBases.spd!=null) {
+                if (typeof classBases.spd != 'number') {
+                    throwError033(unitClass);
+                }
+                finalBases.spd = classBases.spd;
+            }
+            else {
+                finalBases.spd = all;
+            }
+    
+            if (classBases.luk!=null) {
+                if (typeof classBases.luk != 'number') {
+                    throwError033(unitClass);
+                }
+                finalBases.luk = classBases.luk;
+            }
+            else {
+                finalBases.luk = all;
+            }
+        
+            if (classBases.def!=null) {
+                if (typeof classBases.def != 'number') {
+                    throwError033(unitClass);
+                }
+                finalBases.def = classBases.def;
+            }
+            else {
+                finalBases.def = all;
+            }
+    
+            if (classBases.res!=null) {
+                if (typeof classBases.res != 'number') {
+                    throwError033(unitClass);
+                }
+                finalBases.res = classBases.res;
+            }
+            else {
+                finalBases.res = all;
+            }
+    
+            if (classBases.bld!=null) {
+                if (typeof classBases.bld != 'number') {
+                    throwError033(unitClass);
+                }
+                finalBases.bld = classBases.bld;
+            }
+            else {
+                classBases.bld = all;
+            }
+    
+            if (classBases.mov!=null) {
+                if (typeof classBases.mov != 'number') {
+                    throwError033(unitClass);
+                }
+                finalBases.mov = classBases.mov;
+            }
+            else {
+                finalBases.mov = all;
+            }
+    
+            if (classBases.wlv!=null) {
+                if (typeof classBases.wlv != 'number') {
+                    throwError033(unitClass);
+                }
+                finalBases.wlv = classBases.wlv;
+            }
+            else {
+                finalBases.wlv = all;
+            }
+        }
+        else {
+            finalBases.mhp = 0;
+            finalBases.str = 0;
+            finalBases.mag = 0;
+            finalBases.ski = 0;
+            finalBases.spd = 0;
+            finalBases.luk = 0;
+            finalBases.def = 0;
+            finalBases.res = 0;
+            finalBases.bld = 0;
+            finalBases.mov = 0;
+            finalBases.wlv = 0;
+        }
+
+        return finalBases;
+
+    },
+
+	// D MAS: added difficulty growths
+	getDifficultyGrowths: function() {
 		var difficulty = root.getMetaSession().getDifficulty();
 		var difficultyGrowths = difficulty.custom.growths;
 
@@ -303,7 +447,7 @@ EnemyCalculator = {
 		return finalGrowths;
 	},
 
-    getGlobalVariance: function() {
+	getGlobalVariance: function() {
         var globalVariance =root.getMetaSession().global.variance;       
 
         var finalVariance = {};
@@ -449,63 +593,198 @@ EnemyCalculator = {
 
         return finalVariance;
     },
+	
+// Colonel S: I'm adding this function so I can straight up add stat bonuses/debuffs to specific enemies outside of growths and variance	
+	getBaseAdditions: function(unit) {
+        var baseAdditions = unit.custom.baseAdditions;       
+
+        var finalBaseAdditions = {};
+        if (baseAdditions!=null) {
+            /*if (typeof classGrowths != 'unit') {
+                throwError033(unit);
+            }*/
+            
+            var all;
+            if (baseAdditions.all!=null) {
+                if (typeof baseAdditions.all != 'number') {
+                    throwError033(unit);
+                }
+                all = baseAdditions.all;
+            }
+            else {
+                all = 0;
+            }
+    
+            if (baseAdditions.mhp!=null) {
+                if (typeof baseAdditions.mhp != 'number') {
+                    throwError033(unit);
+                }
+                finalBaseAdditions.mhp = baseAdditions.mhp;
+            }
+            else {
+                finalBaseAdditions.mhp = all;
+            }
+    
+            if (baseAdditions.str!=null) {
+                if (typeof baseAdditions.str != 'number') {
+                    throwError033(unit);
+                }
+                finalBaseAdditions.str = baseAdditions.str;
+            }
+            else {
+                finalBaseAdditions.str = all;
+            }
+    
+            if (baseAdditions.mag!=null) {
+                if (typeof baseAdditions.mag != 'number') {
+                    throwError033(unit);
+                }
+                finalBaseAdditions.mag = baseAdditions.mag;
+            }
+            else {
+                finalBaseAdditions.mag = all;
+            }
+    
+            if (baseAdditions.ski!=null) {
+                if (typeof baseAdditions.ski != 'number') {
+                    throwError033(unit);
+                }
+                finalBaseAdditions.ski = baseAdditions.ski;
+            }
+            else {
+                finalBaseAdditions.ski = all;
+            }
+    
+            if (baseAdditions.spd!=null) {
+                if (typeof baseAdditions.spd != 'number') {
+                    throwError033(unit);
+                }
+                finalBaseAdditions.spd = baseAdditions.spd;
+            }
+            else {
+                finalBaseAdditions.spd = all;
+            }
+    
+            if (baseAdditions.luk!=null) {
+                if (typeof baseAdditions.luk != 'number') {
+                    throwError033(unit);
+                }
+                finalBaseAdditions.luk = baseAdditions.luk;
+            }
+            else {
+                finalBaseAdditions.luk = all;
+            }
+        
+            if (baseAdditions.def!=null) {
+                if (typeof baseAdditions.def != 'number') {
+                    throwError033(unit);
+                }
+                finalBaseAdditions.def = baseAdditions.def;
+            }
+            else {
+                finalBaseAdditions.def = all;
+            }
+    
+            if (finalBaseAdditions.res!=null) {
+                if (typeof baseAdditions.res != 'number') {
+                    throwError033(unit);
+                }
+                finalBaseAdditions.res = baseAdditions.res;
+            }
+            else {
+                finalBaseAdditions.res = all;
+            }
+    
+            if (baseAdditions.bld!=null) {
+                if (typeof baseAdditions.bld != 'number') {
+                    throwError033(unit);
+                }
+                finalBaseAdditions.bld = baseAdditions.bld;
+            }
+            else {
+                finalBaseAdditions.bld = all;
+            }
+    
+            if (baseAdditions.mov!=null) {
+                if (typeof baseAdditions.mov != 'number') {
+                    throwError033(unit);
+                }
+                finalBaseAdditions.mov = baseAdditions.mov;
+            }
+            else {
+                finalBaseAdditions.mov = all;
+            }
+    
+            if (baseAdditions.wlv!=null) {
+                if (typeof baseAdditions.wlv != 'number') {
+                    throwError033(unit);
+                }
+                finalBaseAdditions.wlv = baseAdditions.wlv;
+            }
+            else {
+                finalBaseAdditions.wlv = all;
+            }
+        }
+        else {
+            finalBaseAdditions.mhp = 0;
+            finalBaseAdditions.str = 0;
+            finalBaseAdditions.mag = 0;
+            finalBaseAdditions.ski = 0;
+            finalBaseAdditions.spd = 0;
+            finalBaseAdditions.luk = 0;
+            finalBaseAdditions.def = 0;
+            finalBaseAdditions.res = 0;
+            finalBaseAdditions.bld = 0;
+            finalBaseAdditions.mov = 0;
+            finalBaseAdditions.wlv = 0;
+        }
+
+        return finalBaseAdditions;
+
+    },
 
     //Set the unit stats according to the class base growths. This growths are defined using custom parameters
     setUnitStats: function(unit) {        
         var bases, levels, hp, str, mag, ski, spd, luk, def, res, con, mov, growths, difficultyGrowths;
 
-        bases = unit.getClass().getPrototypeInfo().getInitialArray(); //Initial information of the class
-        levels = unit.getLv() - 1; //Level ups from lvl 1 to current level
-		difficultyGrowths = this.getDifficultyGrowthValues();
+		bases = {
+			mhp: ParamGroup.getUnitValue(unit, ParamType.MHP),
+			str: ParamGroup.getUnitValue(unit, ParamType.POW),
+			mag: ParamGroup.getUnitValue(unit, ParamType.MAG),
+			ski: ParamGroup.getUnitValue(unit, ParamType.SKI),
+			spd: ParamGroup.getUnitValue(unit, ParamType.SPD),
+			luk: ParamGroup.getUnitValue(unit, ParamType.LUK),
+			def: ParamGroup.getUnitValue(unit, ParamType.DEF),
+			res: ParamGroup.getUnitValue(unit, ParamType.MDF),
+			bld: ParamGroup.getUnitValue(unit, ParamType.BLD),
+			mov: ParamGroup.getUnitValue(unit, ParamType.MOV),
+			wlv: ParamGroup.getUnitValue(unit, ParamType.WLV)
+		}
+		difficultyGrowths = this.getDifficultyGrowths();
+		growths = difficultyGrowths;
 		if (unit.getImportance() === ImportanceType.MOB) {
+			bases = this.getBaseValues(unit.getClass()); //Initial information of the class
 			growths = this.getGrowthValues(unit.getClass());
-			growths.str += difficultyGrowths.str || 0
-			growths.mag += difficultyGrowths.mag || 0
-			growths.ski += difficultyGrowths.ski || 0
-			growths.spd += difficultyGrowths.spd || 0
-			growths.luk += difficultyGrowths.luk || 0
-			growths.def += difficultyGrowths.def || 0
-			growths.mdf += difficultyGrowths.mdf || 0
-			growths.bld += difficultyGrowths.bld || 0
-			growths.mov += difficultyGrowths.mov || 0
-			growths.wlv += difficultyGrowths.wlv || 0
-		} else {
-			growths = difficultyGrowths;
 		}
-		// growths = growths + difficulty;
+        levels = unit.getLv() - 1; //Level ups from lvl 1 to current level
+		baseAdditions = this.getBaseAdditions(unit);
 
-		if (UNIT_BASES) {
-			unit.setParamValue(ParamType.MHP, this._calculateStat(ParamGroup.getUnitValue(unit, ParamType.MHP), growths.mhp, levels));
-			unit.setHP(ParamGroup.getClassUnitValue(unit, ParamType.MHP));
-			unit.setParamValue(ParamType.POW, this._calculateStat(ParamGroup.getUnitValue(unit, ParamType.POW), growths.str, levels));
-			unit.setParamValue(ParamType.MAG, this._calculateStat(ParamGroup.getUnitValue(unit, ParamType.MAG), growths.mag, levels));
-			unit.setParamValue(ParamType.SKI, this._calculateStat(ParamGroup.getUnitValue(unit, ParamType.SKI), growths.ski, levels));
-			unit.setParamValue(ParamType.SPD, this._calculateStat(ParamGroup.getUnitValue(unit, ParamType.SPD), growths.spd, levels));
-			unit.setParamValue(ParamType.LUK, this._calculateStat(ParamGroup.getUnitValue(unit, ParamType.LUK), growths.luk, levels));
-			unit.setParamValue(ParamType.DEF, this._calculateStat(ParamGroup.getUnitValue(unit, ParamType.DEF), growths.def, levels));
-			unit.setParamValue(ParamType.MDF, this._calculateStat(ParamGroup.getUnitValue(unit, ParamType.MDF), growths.res, levels));
-			unit.setParamValue(ParamType.BLD, this._calculateStat(ParamGroup.getUnitValue(unit, ParamType.BLD), growths.bld, levels));
-			unit.setParamValue(ParamType.MOV, this._calculateStat(ParamGroup.getUnitValue(unit, ParamType.MOV), growths.mov, levels));
-			unit.setParamValue(ParamType.WLV, this._calculateStat(ParamGroup.getUnitValue(unit, ParamType.WLV), growths.wlv, levels));
-		} else {
-			unit.setParamValue(ParamType.MHP, this._calculateStat(bases[ParamType.MHP], growths.mhp, levels));
-			unit.setHP(ParamGroup.getClassUnitValue(unit, ParamType.MHP));
-			unit.setParamValue(ParamType.POW, this._calculateStat(bases[ParamType.POW], growths.str, levels));
-			unit.setParamValue(ParamType.MAG, this._calculateStat(bases[ParamType.MAG], growths.mag, levels));
-			unit.setParamValue(ParamType.SKI, this._calculateStat(bases[ParamType.SKI], growths.ski, levels));
-			unit.setParamValue(ParamType.SPD, this._calculateStat(bases[ParamType.SPD], growths.spd, levels));
-			unit.setParamValue(ParamType.LUK, this._calculateStat(bases[ParamType.LUK], growths.luk, levels));
-			unit.setParamValue(ParamType.DEF, this._calculateStat(bases[ParamType.DEF], growths.def, levels));
-			unit.setParamValue(ParamType.MDF, this._calculateStat(bases[ParamType.MDF], growths.res, levels));
-			unit.setParamValue(ParamType.BLD, this._calculateStat(bases[ParamType.BLD], growths.bld, levels));
-			unit.setParamValue(ParamType.MOV, this._calculateStat(bases[ParamType.MOV], growths.mov, levels));
-			unit.setParamValue(ParamType.WLV, this._calculateStat(bases[ParamType.WLV], growths.wlv, levels));
-		}
-
+        unit.setParamValue(ParamType.MHP, this._calculateStat(bases.mhp, growths.mhp, levels, baseAdditions.mhp));
+        unit.setHP(ParamGroup.getClassUnitValue(unit, ParamType.MHP));
+        unit.setParamValue(ParamType.POW, this._calculateStat(bases.str, growths.str, levels, baseAdditions.str));
+        unit.setParamValue(ParamType.MAG, this._calculateStat(bases.mag, growths.mag, levels, baseAdditions.mag));
+        unit.setParamValue(ParamType.SKI, this._calculateStat(bases.ski, growths.ski, levels, baseAdditions.ski));
+        unit.setParamValue(ParamType.SPD, this._calculateStat(bases.spd, growths.spd, levels, baseAdditions.spd));
+        unit.setParamValue(ParamType.LUK, this._calculateStat(bases.luk, growths.luk, levels, baseAdditions.luk));
+        unit.setParamValue(ParamType.DEF, this._calculateStat(bases.def, growths.def, levels, baseAdditions.def));
+        unit.setParamValue(ParamType.MDF, this._calculateStat(bases.res, growths.res, levels, baseAdditions.res));
+        unit.setParamValue(ParamType.BLD, this._calculateStat(bases.bld, growths.bld, levels, baseAdditions.bld));
+        unit.setParamValue(ParamType.MOV, this._calculateStat(bases.mov, growths.mov, levels, baseAdditions.mov));
+        unit.setParamValue(ParamType.WLV, this._calculateStat(bases.wlv, growths.wlv, levels, baseAdditions.wlv));
     },
 
-    _calculateStat: function(base, growth, levels) {
-        return base + Math.round((growth*levels)/100);
+    _calculateStat: function(base, growth, levels, extra) {
+        return base + Math.round((growth*levels)/100) + extra;
     },
 
     setRandomVariance: function(unit) {
